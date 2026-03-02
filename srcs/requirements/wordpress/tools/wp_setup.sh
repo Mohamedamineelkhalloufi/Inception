@@ -2,12 +2,12 @@
 
 set -e
 
-if [ ! -f /var/www/wordpress/wp-load.php ]; then
-    wp core download --allow-root --path='/var/www/wordpress'
+if [ ! -f /var/www/html/wp-load.php ]; then
+    wp core download --allow-root --path='/var/www/html'
 else
 {
-    rm -rf /var/www/wordpress/*
-    wp core download --allow-root --path='/var/www/wordpress'
+    rm -rf /var/www/html/*
+    wp core download --allow-root --path='/var/www/html'
 }
 fi
 
@@ -16,7 +16,7 @@ wp config create --allow-root \
     --dbuser=$MYSQL_USER \
     --dbpass=$MYSQL_PASSWORD \
     --dbhost=mariadb \
-    --path='/var/www/wordpress'
+    --path='/var/www/html'
 
 wp core install \
     --url=$WP_URL \
@@ -25,6 +25,6 @@ wp core install \
     --admin_password=$WP_APASSWORD \
     --admin_email=$WP_AEMAIL \
     --allow-root \
-    --path='/var/www/wordpress'
+    --path='/var/www/html'
 
 exec php-fpm8.4 -F
