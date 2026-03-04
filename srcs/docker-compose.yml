@@ -8,7 +8,7 @@ services:
         networks:
             - inception
         volumes:
-            - mariadb_data:/var/lib/mysql
+            - mariadb:/var/lib/mysql
     wordpress:
         build: ./requirements/wordpress
         container_name: wordpress
@@ -20,7 +20,7 @@ services:
         networks:
             - inception
         volumes:
-            - wordpress_data:/var/www/html
+            - wordpress:/var/www/html
     nginx:
         build: ./requirements/nginx
         container_name: nginx
@@ -34,19 +34,19 @@ services:
         networks:
             - inception
         volumes:
-            - wordpress_data:/var/www/html
+            - wordpress:/var/www/html
 volumes:
-    mariadb_data:
+    mariadb:
         driver: local
         driver_opts:
             type: none
+            device: /home/mohel-kh/data/mariadb
             o: bind
-        device: /home/mohel-kh/data/mariadb
-    wordpress_data:
+    wordpress:
         driver: local
         driver_opts:
             type: none
+            device: /home/mohel-kh/data/wordpress
             o: bind
-        device: /home/mohel-kh/data/wordpress
 networks:
     inception:
