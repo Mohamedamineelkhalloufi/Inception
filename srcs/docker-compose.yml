@@ -39,6 +39,16 @@ services:
             - wordpress_data:/var/www/html
 volumes:
     mariadb_data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+        device: /home/mohel-kh/data/mariadb
     wordpress_data:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+        device: /home/mohel-kh/data/wordpress
 networks:
     inception:

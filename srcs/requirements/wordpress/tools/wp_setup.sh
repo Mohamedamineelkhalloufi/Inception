@@ -11,6 +11,8 @@ else
 }
 fi
 
+sleep 10
+
 wp config create --allow-root \
     --dbname=$MYSQL_DATABASE \
     --dbuser=$MYSQL_USER \
@@ -24,6 +26,12 @@ wp core install \
     --admin_user=$WP_AUSER \
     --admin_password=$WP_APASSWORD \
     --admin_email=$WP_AEMAIL \
+    --allow-root \
+    --path='/var/www/html'
+
+wp user create $NEW_USER $EMAIL_USER \
+    --role=editor \
+    --user_pass=$USER_PASS \
     --allow-root \
     --path='/var/www/html'
 
