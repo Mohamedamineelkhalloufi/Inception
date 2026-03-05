@@ -2,6 +2,7 @@ services:
     mariadb:
         build: ./requirements/mariadb
         container_name: mariadb
+        image: mariadb
         restart: always
         env_file:
             - .env
@@ -12,6 +13,7 @@ services:
     wordpress:
         build: ./requirements/wordpress
         container_name: wordpress
+        image: wordpress
         restart: always
         depends_on:
             - mariadb
@@ -24,6 +26,7 @@ services:
     nginx:
         build: ./requirements/nginx
         container_name: nginx
+        image: nginx
         restart: always
         ports:
             - "443:443"
@@ -37,6 +40,16 @@ services:
             - wordpress:/var/www/html
 volumes:
     mariadb:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/mohel-kh/data/mariadb
+            o: bind
     wordpress:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/mohel-kh/data/wordpress
+            o: bind
 networks:
     inception:

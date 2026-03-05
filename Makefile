@@ -16,7 +16,7 @@ clean:
 	docker-compose -f ./srcs/docker-compose.yml down -v --rmi all
 
 logs:
-	docker-compose -f ./srcs/docker-compose.yml logs -f
+	docker-compose -f ./srcs/docker-compose.yml logs
 
 re:
 	make down

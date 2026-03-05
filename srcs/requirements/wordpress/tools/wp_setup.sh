@@ -2,9 +2,10 @@
 
 set -e
 
-sleep 10
-
 if [ ! -f /var/www/html/wp-config.php ]; then
+
+    rm -rf /var/www/html/*
+
     wp core download --allow-root --path='/var/www/html'
 
     wp config create --allow-root \
