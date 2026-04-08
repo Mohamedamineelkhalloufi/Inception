@@ -1,19 +1,15 @@
-FROM debian:trixie
+FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y php8.4 php-fpm php-mysql mariadb-client wget
+RUN apt-get update && apt-get install -y php7.4 php7.4-fpm php7.4-mysql mariadb-client curl
 
 RUN mkdir -p /run/php
 
-COPY conf/www.conf /etc/php/8.4/fpm/pool.d/.
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
-RUN chmod +x wp-cli.phar
+COPY tools/wp_setup.sh /wp_setup.sh
 
-RUN mv wp-cli.phar /usr/local/bin/wp
+RUN chmod +x /wp_setup.sh
 
-COPY tools/wp_setup.sh /
-
-RUN chmod +x wp_setup.sh
-
-CMD [ "/wp_setup.sh" ]
+CMD ["/wp_setup.sh"]

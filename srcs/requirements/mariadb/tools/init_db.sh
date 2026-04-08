@@ -1,21 +1,22 @@
 #!/bin/bash
+set -e
 
-mariadbd &
-DB_PID=$!
+mysqld_safe &
+pid="$!"
 
-while ! mysqladmin ping -u root -p"$MYSQL_ROOT_PASSWORD" --silent; do
+until mysqladmin ping --silent; do
     sleep 1
 done
 
-mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<-EOF
+mysql <<EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
 EOF
 
-kill $DB_PID
-wait $DB_PID 2>/dev/null
+kill "$pid"
+wait "$pid"
 
-exec mariadbd
+exec mysqld_safe
